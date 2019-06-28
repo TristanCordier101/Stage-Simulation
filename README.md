@@ -4,7 +4,7 @@
 
 1. Installer Postgreql
 2. Installer Postgis
-3. Créer une base de données appeleée tomsa et un utilisateur appelé tomsa
+3. Créer une base de données appelée tomsa avec extention Postgis et un utilisateur appelé tomsa
 4. Lancer le script tomsa.sql
 
 5. Installer mongoDB
