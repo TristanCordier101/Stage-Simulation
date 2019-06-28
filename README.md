@@ -1,14 +1,32 @@
-# kobdig-meili
+# Windows
 
 ## Introduction :
 
 1. Installer Postgreql
 2. Installer Postgis
 3. Créer une base de données appeleée tomsa et un utilisateur appelé tomsa
+4. Lancer le script tomsa.sql
+
+5. Installer mongoDB
+
+6. Installer la commande curl si nécessaire
 
 ## Execution :
+1. Lancer le server de la bd 
+ - pg_ctl -D "myPath\PostgreSQL\11\data" start
+2. mvn install
 
-1. Créer une commande maven : spring-boot:run
+Dans les modules simulator et data-extractor :
+1. mvn spring-boot:run
+
+Dans le module interface :
+1. mvn appengine:devserver
+2. Ouvrir un navigateur et se connecter sur l'url :
+ -  "localhost:8080/one" : pour l'interface de lancement d'une seule simulation
+ -  "localhost:8080/multi" : pour l'interface de lancement de multiple simulation
+ -  "localhost:8080/extract" : pour l'interface d'une extraction
+ 
+ Les modules associés à l'interface doivent être lancé en amont.
 
 ## Liste des commandes et leurs arguments :
 
@@ -16,8 +34,10 @@
 
 Cela se fait par le biais d'une commande curl, en voici un exemple :
 ```
-curl -H "Content-Type: application/json" -d '{"type": "StateSimulatorMessage", "value": {"nbrHousehold": 50, "nbrInvestor": 50, "nbrPromoter": 50, "num":2, "listOfEquipment":[85,81], "listOfTransport":[176,794], "fileHousehold" : "householdAgent.apl", "fileInvestor" : "investorAgent.apl", "filePromoter" : "promoterAgent.apl"}}' localhost:8080/state
+curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"nbrHousehold\": 50, \"nbrInvestor\": 50, \"nbrPromoter\": 50, \"num\":10, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
+
 ```
+La simulation utilise le port 9090
 
 Détails des paramètres :
   -fileInvestor / Household / Promoter : c'est le nom du fichier .apl de l'agent concerné, il doti se trouver dans le dossier "docs" du simulateur
@@ -29,8 +49,9 @@ Détails des paramètres :
  
  Cela se fait également par commande curl voici un exemple :
 ```   
-curl -H "Content-Type: application/json" -d '{"type": "ExtractDataMessage", "value": {"entity":"household", "idSimulation":"45"}}' localhost:8080/extract  
+curl -H "Content-Type: application/json" -X POST localhost:9091/extract -d "{\"entity\":\"household\", \"idSimulation\":\"0\"}"
 ```
+L'extraction utilise le port 9091
 
 Avec cette commande, un dossier Simulation45 sera créé dans le dossier results du programme, a l'intérieur de ce dossier, tout le contenu de la collection Mongo des household de la simulation 45 sera extrait au format .csv.
 Les différents paramètres d'extraction sont : household, property, land, promoter, investor, configuration.
