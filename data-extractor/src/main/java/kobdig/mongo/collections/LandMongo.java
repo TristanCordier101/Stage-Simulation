@@ -1,6 +1,5 @@
 package kobdig.mongo.collections;
 
-import kobdig.urbanSimulation.entities.environement.Land;
 import org.springframework.data.annotation.Id;
 
 
@@ -43,14 +42,6 @@ public class LandMongo {
 
     public double getUtility() {
         return utility;
-    }
-
-    public LandMongo(int idSimulation, int step, Land l) {
-        this.idSimulation = idSimulation;
-        this.utility = l.getUtility();
-        this.id = l.getId();
-        this.step = step;
-        this.price = l.getPrice();
     }
 
 

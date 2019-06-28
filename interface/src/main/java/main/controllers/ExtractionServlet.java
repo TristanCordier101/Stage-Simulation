@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class ExtractionServlet extends HttpServlet {
 
-    private static final String HTTP_LOCALHOST_8080_TRAFFIC_LIGHT = "http://localhost:9092/extract";
+    private static final String HTTP_LOCALHOST_8080_TRAFFIC_LIGHT = "http://localhost:9091/extract";
 
 
     @Override

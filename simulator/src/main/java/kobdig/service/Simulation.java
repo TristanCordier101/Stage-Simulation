@@ -1,6 +1,5 @@
 package kobdig.service;
 
-import kobdig.communication.Sender;
 import kobdig.mongo.collections.*;
 import kobdig.mongo.repository.*;
 import kobdig.agent.Agent;
@@ -58,9 +57,6 @@ public class Simulation {
     @Autowired
     private HouseholdMongoRepository householdMongoRepository;
 
-    @Autowired
-    private Sender sender;
-
     /** Execution delay in milliseconds */
     private volatile int executionDelay = 10;
 
@@ -112,6 +108,7 @@ public class Simulation {
      * @throws SQLException
      */
     public void writeResults(EntitiesCreator entitiesCreator, int time) throws SQLException {
+
         for (AdministrativeDivision division : entitiesCreator.getDivisions()) {
             if (division != null) {
                 for (Property property : division.getProperties()) {
@@ -208,7 +205,6 @@ public class Simulation {
         if (builder.getTime() >= builder.getNumSim()) {
             System.err.println("SIMULATION FINISHED");
             running = false;
-            sender.send("extract", Integer.toString(builder.getId()));
         } else {
             System.err.println("STEP " + (builder.getTime()+1) + "/" + builder.getNumSim());
             int occuped = 0;
@@ -247,8 +243,8 @@ public class Simulation {
                 e.printStackTrace();
             }
 
-            System.out.println("occuped : " + occuped + " for rent " + forrent + " rented : " + rented + " for sale : " + forsale);
-            System.out.println("land size : " + landsize);
+            System.err.println("occuped : " + occuped + " for rent " + forrent + " rented : " + rented + " for sale : " + forsale);
+            System.err.println("land size : " + landsize);
 
         }
     }

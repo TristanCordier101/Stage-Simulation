@@ -48,10 +48,7 @@ public class Simulation
     
     /**
      * Select an individual proportionately to fitness.
-     * 
-     * @param pool
-     * @param cumulativeFitness
-     * @return
+     *
      */
     protected EvoTrader select(List<EvoTrader> pool)
     {

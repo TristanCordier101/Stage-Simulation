@@ -2,7 +2,6 @@ package kobdig.mongo.repository;
 
 import kobdig.mongo.collections.InvestorMongo;
 import kobdig.mongo.collections.PromoterMongo;
-import kobdig.urbanSimulation.entities.agents.Promoter;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

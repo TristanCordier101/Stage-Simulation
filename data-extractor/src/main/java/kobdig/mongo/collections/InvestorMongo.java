@@ -1,6 +1,5 @@
 package kobdig.mongo.collections;
 
-import kobdig.urbanSimulation.entities.agents.Investor;
 import org.springframework.data.annotation.Id;
 
 /**
@@ -67,21 +66,6 @@ public class InvestorMongo {
 
     }
 
-    public InvestorMongo(int idSimulation, int step, Investor i){
-        this.idSimulation = idSimulation;
-        this.step = step;
-        this.id = i.getId();
-        this.purchasingpower = i.getCurrentPurchasingPower();
-        this.monthlyIncome = i.getCurrentNetMonthlyIncome();
-        this.speculate = i.getSpeculate();
-        this.currentrent = i.getCurrentRent();
-        this.investDegree = i .getInvestDegree();
-        try {
-            this.householdId = i.getHousehold().getId();
-        }
-        catch(NullPointerException e){
-            this.householdId = "none";
-        }
-    }
+
 
 }

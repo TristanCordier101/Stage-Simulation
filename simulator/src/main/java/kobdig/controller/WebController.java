@@ -40,7 +40,7 @@ public class WebController {
 
     @PostMapping("/state")
     public ResponseEntity<Void> startSimulation(@RequestBody SimulationMessage message) {
-
+        message.toString();
         Date time = new Date();
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.YEAR_FIELD);
         String date = shortDateFormat.format(time);

@@ -28,6 +28,14 @@ Copyright 2015 Google Inc.
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <appengine.maven.plugin>1.9.58</appengine.maven.plugin>
+        <!--Definition of the main class-->
+        <start-class>main.controllers.ExtractionServlet</start-class>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,7 +67,6 @@ Copyright 2015 Google Inc.
             <artifactId>appengine-api-1.0-sdk</artifactId>
             <version>1.9.58</version>
         </dependency>
-
         <dependency>                        <!-- REQUIRED -->
             <groupId>javax.servlet</groupId>  <!-- Java Servlet API -->
             <artifactId>javax.servlet-api</artifactId>

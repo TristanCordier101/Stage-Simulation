@@ -21,7 +21,7 @@ public class AdministrativeDivision {
     public AdministrativeDivision(String id, int code, PGgeometry geom){
         this.id = id;
         this.code = code;
-        this. geom = geom;
+        this.geom = geom;
         this.lands = new ArrayList<>();
         this.networks = new ArrayList<>();
         this.properties = new ArrayList<>();

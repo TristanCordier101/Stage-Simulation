@@ -1,7 +1,6 @@
 package kobdig.mongo.collections;
 
 
-import kobdig.urbanSimulation.entities.agents.Household;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -79,19 +78,6 @@ public class HouseholdMongo  {
 
     }
 
-    public HouseholdMongo(int idSimulation, int step, Household h) {
-        try {
-            this.propertyId = h.getProperty().getId();
-        } catch (NullPointerException e) {
-            this.propertyId = "none";
-        }
-        this.step = step;
-        this.purchasingpower = h.getCurrentPurchasingPower();
-        this.id = h.getId();
-        this.netmonthlyincome = h.getCurrentNetMonthlyIncome();
-        this.idSimulation = idSimulation;
-        this.rentableProperties = h.getRentableProperties().size();
-    }
 
 
     public double getPurchasingpower() {

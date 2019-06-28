@@ -30,4 +30,6 @@ pg_ctl -D "D:\programme2\programme\PostgreSQL\11\data" start
 https://stackoverflow.com/questions/854264/how-to-add-directory-to-classpath-in-an-application-run-profile-in-intellij-idea
 run mongo.exe
 curl -H "Content-Type: application/json" -X POST localhost:8080/state -d "{\"type\": \"StateSimulatorMessage\", \"value\": {\"nbrHousehold\": 50, \"nbrInvestor\": 50, \"nbrPromoter\": 50, \"num\":2, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}}"
+curl -H "Content-Type: application/json" -X POST localhost:8080/state -d "{\"nbrHousehold\": 50, \"nbrInvestor\": 50, \"nbrPromoter\": 50, \"num\":10, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
+curl -H "Content-Type: application/json" -X POST localhost:8081/extract -d "{\"entity\":\"household\", \"idSimulation\":\"0\"}"
  */

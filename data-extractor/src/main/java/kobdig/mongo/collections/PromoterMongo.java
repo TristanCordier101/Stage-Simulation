@@ -1,8 +1,5 @@
 package kobdig.mongo.collections;
 
-
-import kobdig.urbanSimulation.entities.agents.Promoter;
-import kobdig.urbanSimulation.entities.environement.Land;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -70,11 +67,5 @@ public class PromoterMongo {
         this.purchasingpower = purchasingpower;
     }
 
-    public PromoterMongo(int sumlationId, int step, Promoter p){
-        this.step = step;
-        this.idSimulation = sumlationId;
-        this.id = p.getId();
-        this.purchasingpower = p.getPurchasingPower();
-        this.landsSize = p.getPurchasableLand().size();
-    }
+
 }
