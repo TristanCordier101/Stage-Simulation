@@ -1,6 +1,6 @@
 # Windows
 
-## Introduction :
+## Prérequis :
 
 1. Installer Postgreql
 2. Installer Postgis
