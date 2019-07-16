@@ -5,25 +5,28 @@
 1. Installer Postgreql
 2. Installer Postgis
 3. Créer une base de données appelée tomsa avec extention Postgis et un utilisateur appelé tomsa
-4. Lancer le script tomsa.sql
+4. Lancer le script db/tomsa.sql
 
 5. Installer mongoDB
 
 6. Installer la commande curl si nécessaire
 
 ## Execution :
-1. Lancer le server de la bd 
+Dans un terminal :
+1. Lancer le server de la bd exemple :
  - pg_ctl -D "myPath\PostgreSQL\11\data" start
-2. mvn install
+ 
+A la racine de chaque module :
+1. mvn install
 
 Dans les modules simulator et data-extractor :
-1. mvn spring-boot:run
+2. mvn spring-boot:run
 
 Dans le module interface :
-1. mvn appengine:devserver
-2. Ouvrir un navigateur et se connecter sur l'url :
+2. mvn appengine:devserver
+3. Ouvrir un navigateur et se connecter sur l'url :
  -  "localhost:8080/one" : pour l'interface de lancement d'une seule simulation
- -  "localhost:8080/multi" : pour l'interface de lancement de multiple simulation
+ -  "localhost:8080/multi" : pour l'interface de lancement de multiple simulations
  -  "localhost:8080/extract" : pour l'interface d'une extraction
  
  Les modules associés à l'interface doivent être lancé en amont.
@@ -40,7 +43,7 @@ curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"nbr
 La simulation utilise le port 9090
 
 Détails des paramètres :
-  -fileInvestor / Household / Promoter : c'est le nom du fichier .apl de l'agent concerné, il doti se trouver dans le dossier "docs" du simulateur
+  -fileInvestor / Household / Promoter : c'est le nom du fichier .apl de l'agent concerné, il doit se trouver dans le dossier "docs" du simulateur
   -num : c'est le nombre de tours que a accomplir la simulation  
   -listOfEquipment : c'est la list d'équipement qui vont être pris en compte lors de la simulation (si ce paramètre n'est pas présent, la simulation se lance avec tous les equipements)  
   -listOfNetwork : même chose que pour equipements.  
