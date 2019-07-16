@@ -19,7 +19,7 @@ public class AbstractEnvironment implements IEnvironment {
         this.latitude = latitude;
         this.longitude = longitude;
         this.division = null;
-        this.utility = Double.NEGATIVE_INFINITY;
+        this.utility = 0;
         this.geom = geom;
         this.updated = false;
     }

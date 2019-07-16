@@ -6,6 +6,7 @@ import java.util.List;
 public class SimulationMessage {
 
     private int num;
+    private int storageType;
 
     private int nbrHousehold;
     private int nbrPromoter;
@@ -17,6 +18,14 @@ public class SimulationMessage {
     private String fileHousehold;
     private String fileInvestor;
     private String filePromoter;
+
+    public int getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(int storageType) {
+        this.storageType = storageType;
+    }
 
     public int getNbrHousehold() {
         return nbrHousehold;
@@ -94,6 +103,7 @@ public class SimulationMessage {
     public String toString() {
         return "{" +
                 "\"num\":" + num +
+                ",\"strorageType\":" + storageType +
                 ", \"nbrHousehold\":" + nbrHousehold +
                 ", \"nbrPromoter\":" + nbrPromoter +
                 ", \"nbrInvestor\":" + nbrInvestor +

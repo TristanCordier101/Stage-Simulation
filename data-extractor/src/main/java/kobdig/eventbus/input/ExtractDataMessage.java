@@ -6,6 +6,7 @@ package kobdig.eventbus.input;
 public class ExtractDataMessage {
     private String entity;
     private int idSimulation;
+    private int storageType;
 
     public String getEntity() {
         return entity;
@@ -21,5 +22,13 @@ public class ExtractDataMessage {
 
     public void setIdSimulation(int idSimulation) {
         this.idSimulation = idSimulation;
+    }
+
+    public int getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(int storageType) {
+        this.storageType = storageType;
     }
 }

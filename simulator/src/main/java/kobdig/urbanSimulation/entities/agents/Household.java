@@ -39,9 +39,9 @@ public class Household extends AbstractAgentBuy implements IActionnable {
         this.rentableProperties = new ArrayList<>();
         this.renting = false;
         this.ownerOccupied = false;
-        this.qualityCoefficient = Math.random();
-        this.centralityCoefficient = Math.random();
-        this.proximityCoefficient = Math.random();
+        this.qualityCoefficient = 1/3;//Math.random();
+        this.centralityCoefficient = 1/3; //Math.random();
+        this.proximityCoefficient = 1/3; //Math.random();
         double utility = qualityCoefficient + centralityCoefficient + proximityCoefficient;
         this.qualityCoefficient = qualityCoefficient / utility;
         this.centralityCoefficient = centralityCoefficient / utility;

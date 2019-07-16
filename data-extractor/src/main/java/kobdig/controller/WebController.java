@@ -18,22 +18,46 @@ public class WebController {
     public ResponseEntity<Void> extractData(@RequestBody ExtractDataMessage message){
         switch(message.getEntity()){
             case "household":
-                extractor.findHouseholdsBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findHouseholdsBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findHouseholdsBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             case "promoter":
-                extractor.findPromotersBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findPromotersBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findPromotersBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             case "investor":
-                extractor.findInvestorsBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findInvestorsBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findInvestorsBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             case "land":
-                extractor.findLandsBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findLandsBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findLandsBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             case "property":
-                extractor.findPropertiesBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findPropertiesBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findPropertiesBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             case "configuration":
-                extractor.findConfigurationBySimulationId(message.getIdSimulation());
+                if(message.getStorageType()==0){
+                    extractor.findConfigurationBySimulationIdMongo(message.getIdSimulation());
+                }else{
+                    extractor.findConfigurationBySimulationIdPostgre(message.getIdSimulation());
+                }
                 break;
             default:
                 break;

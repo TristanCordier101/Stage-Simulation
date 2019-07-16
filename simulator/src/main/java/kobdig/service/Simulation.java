@@ -3,10 +3,8 @@ package kobdig.service;
 import kobdig.mongo.collections.*;
 import kobdig.mongo.repository.*;
 import kobdig.agent.Agent;
-import kobdig.sql.repository.IndicatorOneRepository;
-import kobdig.sql.repository.IndicatorTwoRepository;
-import kobdig.sql.tables.IndicatorOne;
-import kobdig.sql.tables.IndicatorTwo;
+import kobdig.sql.repository.*;
+import kobdig.sql.tables.*;
 import kobdig.urbanSimulation.EntitiesCreator;
 import kobdig.urbanSimulation.entities.agents.AbstractAgent;
 import kobdig.urbanSimulation.entities.agents.Household;
@@ -32,6 +30,7 @@ public class Simulation {
     private int actualIteration = 0;
     public static final String EQUIPMENT = "equipment";
     protected static Agent investorAgent;
+    private int strorage = 0;
 
     @Autowired
     private EntitiesCreator builder;
@@ -56,6 +55,21 @@ public class Simulation {
 
     @Autowired
     private HouseholdMongoRepository householdMongoRepository;
+
+    @Autowired
+    private InvestorStateRepository investorStateRepository;
+
+    @Autowired
+    private PromoterStateRepository promoterStateRepository;
+
+    @Autowired
+    private LandStateRepository landStateRepository;
+
+    @Autowired
+    private PropertyStateRepository propertyStateRepository;
+
+    @Autowired
+    private HouseholdStateRepository householdStateRepository;
 
     /** Execution delay in milliseconds */
     private volatile int executionDelay = 10;
@@ -104,10 +118,10 @@ public class Simulation {
     }
 
     /**
-     * Writes the resultant data in the database
+     * Writes the resultant data in the MongoDB database
      * @throws SQLException
      */
-    public void writeResults(EntitiesCreator entitiesCreator, int time) throws SQLException {
+    public void writeResultsMongo(EntitiesCreator entitiesCreator, int time) throws SQLException {
 
         for (AdministrativeDivision division : entitiesCreator.getDivisions()) {
             if (division != null) {
@@ -132,10 +146,41 @@ public class Simulation {
         }
     }
 
-    public synchronized void start() {
+
+    /**
+     * Writes the resultant data in the PostgreSQL database
+     * @throws SQLException
+     */
+    private void writeResultsPostgres(EntitiesCreator entitiesCreator, int time) throws SQLException {
+        for (AdministrativeDivision division : entitiesCreator.getDivisions()) {
+            if (division != null) {
+                for (Property property : division.getProperties()) {
+                    propertyStateRepository.save(new PropertyState(builder.getId(), time, property));
+                }
+                for(Land l : division.getLands()){
+                    landStateRepository.save(new LandState(builder.getId(), time, l));
+                }
+            }
+        }
+        for(AbstractAgent h : entitiesCreator.getAgents()){
+            if(h instanceof Household){
+                householdStateRepository.save(new HouseholdState(builder.getId(), time,(Household) h));
+            }
+            else if(h instanceof Promoter){
+                promoterStateRepository.save(new PromoterState(builder.getId(), time, (Promoter) h));
+            }
+        }
+        for(Investor i : entitiesCreator.getInvestors()){
+            investorStateRepository.save(new InvestorState(builder.getId(), time, i));
+        }
+    }
+
+    public synchronized void start(int strorageType) {
         if (running) {
             throw new IllegalStateException("Animation is already running.");
         }
+
+        this.strorage=strorageType;
 
         // the reason we do not inherit from Runnable is that we do not want to
         // expose the void run() method to the outside world. We want to well
@@ -238,7 +283,11 @@ public class Simulation {
 
             try {
                 writeIndicators(builder, builder.getTime());
-                writeResults(builder, builder.getTime());
+                if(strorage == 0){
+                    writeResultsMongo(builder, builder.getTime());
+                }else{
+                    writeResultsPostgres(builder, builder.getTime());
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -248,4 +297,5 @@ public class Simulation {
 
         }
     }
+
 }

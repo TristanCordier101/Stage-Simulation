@@ -5,6 +5,8 @@ import kobdig.eventbus.input.TabSimulationMessage;
 import kobdig.mongo.collections.ConfigurationMongo;
 import kobdig.mongo.repository.*;
 import kobdig.service.Simulation;
+import kobdig.sql.repository.ConfigurationRepository;
+import kobdig.sql.tables.Configuration;
 import kobdig.sql.repository.PropertyRepository;
 import kobdig.urbanSimulation.EntitiesCreator;
 import kobdig.urbanSimulation.utils.SimulationLogging;
@@ -36,6 +38,9 @@ public class WebController {
     public ConfigurationMongoRepository configurationMongoRepository;
 
     @Autowired
+    public ConfigurationRepository configurationRepository;
+
+    @Autowired
     public SimulationLogging log;
 
     @PostMapping("/state")
@@ -46,11 +51,19 @@ public class WebController {
         String date = shortDateFormat.format(time);
 
         int idSimulation = 0;
-        while(configurationMongoRepository.findByidSimulation(idSimulation) != null){
-              idSimulation++;
+        if(message.getStorageType()==0){
+            while (configurationMongoRepository.findByidSimulation(idSimulation) != null) {
+                idSimulation++;
+            }
+        }
+        else {
+            while (configurationRepository.findByidSimulation(idSimulation) != null) {
+                idSimulation++;
+            }
         }
 
-        if(!simulation.isRunning()) {
+
+        if (!simulation.isRunning()) {
             entitiesCreator.setNumSim(message.getNum());
             entitiesCreator.setNbrInvestor(message.getNbrInvestor());
             entitiesCreator.setNbrPromoter(message.getNbrPromoter());
@@ -62,9 +75,14 @@ public class WebController {
             entitiesCreator.setFileInvestor(message.getFileInvestor());
             entitiesCreator.setFilePromoter(message.getFilePromoter());
             entitiesCreator.createAll();
-            configurationMongoRepository.save(new ConfigurationMongo(date, message.getNum(), message.getNbrHousehold(), message.getNbrPromoter(), message.getNbrInvestor(), idSimulation, message.getFileHousehold(), message.getFileInvestor(), message.getFilePromoter(), message.getListOfEquipment(), message.getListOfTransport()));
-            simulation.start();
-            while(simulation.isRunning()){
+            if(message.getStorageType()==0){
+                configurationMongoRepository.save(new ConfigurationMongo(date, message.getNum(), message.getNbrHousehold(), message.getNbrPromoter(), message.getNbrInvestor(), idSimulation, message.getFileHousehold(), message.getFileInvestor(), message.getFilePromoter(), message.getListOfEquipment(), message.getListOfTransport()));
+            }else{
+                configurationRepository.save(new Configuration(message.getNum(), message.getNbrHousehold(), message.getNbrPromoter(), message.getNbrInvestor(), message.getFileHousehold(), message.getFileInvestor(), message.getFilePromoter(), idSimulation, message.getListOfEquipment().toString(), message.getListOfTransport().toString(),time));
+
+            }
+            simulation.start(message.getStorageType());
+            while (simulation.isRunning()) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -74,7 +92,7 @@ public class WebController {
             Date time2 = new Date();
             log.writeData("------------------------------------------------------------------");
             log.writeData("SIMULATION DU " + date + " NUMERO " + idSimulation);
-            log.writeData("terminée à " +shortDateFormat.format(time2));
+            log.writeData("terminée à " + shortDateFormat.format(time2));
             log.writeData("------------------------------------------------------------------");
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -87,10 +105,17 @@ public class WebController {
         DateFormat shortDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.YEAR_FIELD);
         String date = shortDateFormat.format(time);
 
-        for(SimulationMessage simulationMessage : tabMessage.getSimulationMessageList()){
+        for (SimulationMessage simulationMessage : tabMessage.getSimulationMessageList()) {
             int idSimulationBis = 0;
-            while(configurationMongoRepository.findByidSimulation(idSimulationBis) != null){
-                idSimulationBis++;
+            if(simulationMessage.getStorageType()==0){
+                while (configurationMongoRepository.findByidSimulation(idSimulationBis) != null) {
+                    idSimulationBis++;
+                }
+            }
+            else {
+                while (configurationRepository.findByidSimulation(idSimulationBis) != null) {
+                    idSimulationBis++;
+                }
             }
             entitiesCreator.setNumSim(simulationMessage.getNum());
             entitiesCreator.setNbrInvestor(simulationMessage.getNbrInvestor());
@@ -103,9 +128,14 @@ public class WebController {
             entitiesCreator.setFileInvestor(simulationMessage.getFileInvestor());
             entitiesCreator.setFilePromoter(simulationMessage.getFilePromoter());
             entitiesCreator.createAll();
-            configurationMongoRepository.save(new ConfigurationMongo(date, simulationMessage.getNum(), simulationMessage.getNbrHousehold(), simulationMessage.getNbrPromoter(), simulationMessage.getNbrInvestor(), idSimulationBis, simulationMessage.getFileHousehold(), simulationMessage.getFileInvestor(), simulationMessage.getFilePromoter(), simulationMessage.getListOfEquipment(), simulationMessage.getListOfTransport()));
-            simulation.start();
-            while(simulation.isRunning()){
+            if(simulationMessage.getStorageType()==0){
+                configurationMongoRepository.save(new ConfigurationMongo(date, simulationMessage.getNum(), simulationMessage.getNbrHousehold(), simulationMessage.getNbrPromoter(), simulationMessage.getNbrInvestor(), idSimulationBis, simulationMessage.getFileHousehold(), simulationMessage.getFileInvestor(), simulationMessage.getFilePromoter(), simulationMessage.getListOfEquipment(), simulationMessage.getListOfTransport()));
+            }else{
+                configurationRepository.save(new Configuration(simulationMessage.getNum(), simulationMessage.getNbrHousehold(), simulationMessage.getNbrPromoter(), simulationMessage.getNbrInvestor(), simulationMessage.getFileHousehold(), simulationMessage.getFileInvestor(), simulationMessage.getFilePromoter(), idSimulationBis, simulationMessage.getListOfEquipment().toString(), simulationMessage.getListOfTransport().toString(),time));
+
+            }
+            simulation.start(simulationMessage.getStorageType());
+            while (simulation.isRunning()) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -115,7 +145,7 @@ public class WebController {
             Date time2 = new Date();
             log.writeData("------------------------------------------------------------------");
             log.writeData("SIMULATION DU " + date + " NUMERO " + idSimulationBis);
-            log.writeData("terminée à " +shortDateFormat.format(time2));
+            log.writeData("terminée à " + shortDateFormat.format(time2));
             log.writeData("------------------------------------------------------------------");
         }
 
@@ -129,4 +159,5 @@ public class WebController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
