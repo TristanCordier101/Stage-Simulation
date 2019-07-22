@@ -1,6 +1,7 @@
 package kobdig.controller;
 
 import kobdig.eventbus.input.ExtractDataMessage;
+import kobdig.eventbus.input.ExtractMultipleDataMessage;
 import kobdig.service.DataExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,52 +16,56 @@ public class WebController {
 
 
     @PostMapping("/extract")
-    public ResponseEntity<Void> extractData(@RequestBody ExtractDataMessage message){
-        switch(message.getEntity()){
-            case "household":
-                if(message.getStorageType()==0){
-                    extractor.findHouseholdsBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findHouseholdsBySimulationIdPostgre(message.getIdSimulation());
+    public ResponseEntity<Void> extractData(@RequestBody ExtractMultipleDataMessage message) {
+        if (!message.getIdSimulationRange().isEmpty()){
+            for (String entity : message.getEntity()) {
+                switch (entity) {
+                    case "household":
+                        if (message.getStorageType() == 0) {
+                            extractor.findHouseholdsBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findHouseholdsBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    case "promoter":
+                        if (message.getStorageType() == 0) {
+                            extractor.findPromotersBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findPromotersBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    case "investor":
+                        if (message.getStorageType() == 0) {
+                            extractor.findInvestorsBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findInvestorsBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    case "land":
+                        if (message.getStorageType() == 0) {
+                            extractor.findLandsBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findLandsBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    case "property":
+                        if (message.getStorageType() == 0) {
+                            extractor.findPropertiesBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findPropertiesBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    case "configuration":
+                        if (message.getStorageType() == 0) {
+                            extractor.findConfigurationBySimulationIdMongo(message.getIdSimulationRange());
+                        } else {
+                            extractor.findConfigurationBySimulationIdPostgre(message.getIdSimulationRange());
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                break;
-            case "promoter":
-                if(message.getStorageType()==0){
-                    extractor.findPromotersBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findPromotersBySimulationIdPostgre(message.getIdSimulation());
-                }
-                break;
-            case "investor":
-                if(message.getStorageType()==0){
-                    extractor.findInvestorsBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findInvestorsBySimulationIdPostgre(message.getIdSimulation());
-                }
-                break;
-            case "land":
-                if(message.getStorageType()==0){
-                    extractor.findLandsBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findLandsBySimulationIdPostgre(message.getIdSimulation());
-                }
-                break;
-            case "property":
-                if(message.getStorageType()==0){
-                    extractor.findPropertiesBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findPropertiesBySimulationIdPostgre(message.getIdSimulation());
-                }
-                break;
-            case "configuration":
-                if(message.getStorageType()==0){
-                    extractor.findConfigurationBySimulationIdMongo(message.getIdSimulation());
-                }else{
-                    extractor.findConfigurationBySimulationIdPostgre(message.getIdSimulation());
-                }
-                break;
-            default:
-                break;
+            }
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -37,10 +37,19 @@ curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"nbr
 curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"nbrHousehold\": 50, \"nbrInvestor\": 0, \"nbrPromoter\": 0, \"num\":10, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
 curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"nbrHousehold\": 10,\"storageType\": 1, \"nbrInvestor\": 10, \"nbrPromoter\": 10, \"num\":5, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
 
+curl -H "Content-Type: application/json" -X POST localhost:9090/statetab -d "{\"simulationMessageList\":{\"storageType\": 1, \"nbrHousehold\": 10, \"nbrInvestor\": 10, \"nbrPromoter\": 10, \"num\":5, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"},{\"storageType\": 1, \"nbrHousehold\": 10, \"nbrInvestor\": 10, \"nbrPromoter\": 10, \"num\":5, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}}"
+
+{“simulationMessageList”
+
 psql -U postgres
 CREATE DATABASE tomsa;
 
 curl -H "Content-Type: application/json" -X POST localhost:9091/extract -d "{\"entity\":\"property\",\"storageType\": 1, \"idSimulation\":\"1\"}"
+curl -H "Content-Type: application/json" -X POST localhost:9091/extract -d "{\"entity\":[\"property\",\"configuration\"],\"storageType\": 1, \"idSimulationRange\":[6,20]}"
+
+
+curl -H "Content-Type: application/json" -X POST localhost:9090/batch -d "{\"storageType\": 1, \"nbrHouseholdRange\": [50,60],\"nbrHouseholdStep\": 5, \"nbrInvestorRange\": [50,60],\"nbrInvestorStep\": 5, \"nbrPromoterRange\": [50,60],\"nbrPromoterStep\": 5, \"numRange\":[5], \"numStep\":1, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
+
 */
 
 /*
