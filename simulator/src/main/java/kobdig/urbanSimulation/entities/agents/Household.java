@@ -39,9 +39,9 @@ public class Household extends AbstractAgentBuy implements IActionnable {
         this.rentableProperties = new ArrayList<>();
         this.renting = false;
         this.ownerOccupied = false;
-        this.qualityCoefficient = 1/3;//Math.random();
-        this.centralityCoefficient = 1/3; //Math.random();
-        this.proximityCoefficient = 1/3; //Math.random();
+        this.qualityCoefficient = 1;//Math.random();
+        this.centralityCoefficient = 0; //Math.random();
+        this.proximityCoefficient = 0; //Math.random();
         double utility = qualityCoefficient + centralityCoefficient + proximityCoefficient;
         this.qualityCoefficient = qualityCoefficient / utility;
         this.centralityCoefficient = centralityCoefficient / utility;
@@ -105,8 +105,8 @@ public class Household extends AbstractAgentBuy implements IActionnable {
                     transportUtility = purchasable.getLand().getTransportUtility();
 
                     purchasable.setUtility(0.4*(equipUtility/(double)entitiesCreator.getEquipmentsLength()) + 0.6*(transportUtility/(double)entitiesCreator.getNetworkLength()));
-//                    purchasable.setUtility(0.0*(equipUtility/(double)equipmentsLength) + 1.0*(transportUtility/(double)networkLength));
-//                    purchasable.setUtility(Math.random());
+//                    purchasable.setUtility( 1.0*(transportUtility/(double)entitiesCreator.getNetworkLength()));
+ //                   purchasable.setUtility(Math.random());
                     purchasable.setUpdated(true);
                 }
                 if(purchasable.getUtility() > maxUtility){
@@ -135,8 +135,8 @@ public class Household extends AbstractAgentBuy implements IActionnable {
 
 
                     purchasable.setUtility(0.4*(equipUtility/(double)entitiesCreator.getEquipmentsLength()) + 0.6*(transportUtility/(double)entitiesCreator.getNetworkLength()));
-//                    purchasable.setUtility(0.0*(equipUtility/(double)equipmentsLength) + 1.0*(transportUtility/(double)networkLength));
-//                    purchasable.setUtility(Math.random());
+//                    purchasable.setUtility( 1.0*(transportUtility/(double)entitiesCreator.getNetworkLength()));
+ //                   purchasable.setUtility(Math.random());
                     purchasable.setUpdated(true);
                 }
                 if(purchasable.getUtility() > maxUtility){
@@ -279,7 +279,7 @@ public class Household extends AbstractAgentBuy implements IActionnable {
 
 
                     purchasable.setUtility(0.4*(equipUtility/(double)entitiesCreator.getEquipmentsLength()) + 0.6*(transportUtility/(double)entitiesCreator.getNetworkLength()));
-//                    purchasable.setUtility(0.0*(equipUtility/(double)equipmentsLength) + 1.0*(transportUtility/(double)networkLength));
+//                    purchasable.setUtility( 1.0*(transportUtility/(double)entitiesCreator.getNetworkLength()));
 //                        purchasable.setUtility(Math.random());
                     purchasable.setUpdated(true);
                 }
@@ -352,6 +352,8 @@ public class Household extends AbstractAgentBuy implements IActionnable {
             // Updates the satisfied belief
             if(property != null) {
                 double satisfaction = getSatisfaction(property.getUtility(),0,0);
+                //double satisfaction = getSatisfaction(Math.random(),Math.random(),Math.random());
+                //System.out.println(satisfaction);
                 if(satisfaction < 0.4) {
                     updateBelief("p:1");
                     // Updates the changing desire
@@ -365,9 +367,9 @@ public class Household extends AbstractAgentBuy implements IActionnable {
         }
         else if (renting) {
             // Updates the satisfied belief
-            //System.out.println(property);
             if(property != null) {
                 double satisfaction = getSatisfaction(property.getUtility(),0,0);
+                //double satisfaction = getSatisfaction(Math.random(),Math.random(),Math.random());
                 //System.out.println(satisfaction);
                 if(satisfaction < 0.4) {
                     // Updates the changing desire

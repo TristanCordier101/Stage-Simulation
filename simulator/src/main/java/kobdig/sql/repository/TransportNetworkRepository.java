@@ -19,6 +19,6 @@ public interface TransportNetworkRepository extends CrudRepository<TransportNetw
     List<TransportNetworkE> findById(@Param("ids")List<Integer> list);
 
 
-    @Query(value = "SELECT * FROM (SELECT * FROM Red_primaria r WHERE r.gid =176 OR r.gid in :ids) a INNER JOIN buffer b ON ST_Intersects(a.geom, b.geom) WHERE b.id_land = :id", nativeQuery = true)
+    @Query(value = "SELECT * FROM (SELECT * FROM Red_primaria r WHERE r.gid in :ids) a INNER JOIN buffer b ON ST_Intersects(a.geom, b.geom) WHERE b.id_land = :id", nativeQuery = true)
     List<TransportNetworkE> findById(@Param("ids")List<Integer> list,@Param("id") int id);
 }

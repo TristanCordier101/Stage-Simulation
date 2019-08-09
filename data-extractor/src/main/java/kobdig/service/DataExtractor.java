@@ -117,7 +117,6 @@ public class DataExtractor {
             for(int i=idSimulation.get(0);i<=idSimulation.get(idSimulation.size()-1);i++) {
                 List<PropertyState> res = propertyStateRepository.findByidSimulation(i);
                 for (PropertyState l : res) {
-                    System.out.println("Prop : "+ l.getIdsimulation());
                     writer.write(l.getIdsimulation()+"\t");
                     writer.write(l.getStep() + "\t");
                     writer.write(l.getIdproperty() + "\t");

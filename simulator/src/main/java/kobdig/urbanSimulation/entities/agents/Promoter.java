@@ -120,7 +120,7 @@ public class Promoter extends AbstractAgent implements IActionnable {
                     double equipUtility = purchasable.getEquipementUtility();
                     double transportUtility = purchasable.getTransportUtility();
                     purchasable.setUtility(0.4*(equipUtility/(double)entitiesCreator.getEquipmentsLength()) + 0.6*(transportUtility/(double)entitiesCreator.getNetworkLength()));
-//                    purchasable.setUtility(0.0*(equipUtility/(double)equipmentsLength) + 1.0*(transportUtility/(double)networkLength));
+ //                   purchasable.setUtility(1.0*(transportUtility/(double)entitiesCreator.getNetworkLength()));
 //                    purchasable.setUtility(Math.random());
                     purchasable.setUpdated(true);
                 }
