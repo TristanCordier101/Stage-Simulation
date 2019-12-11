@@ -1,28 +1,43 @@
 # Windows
 
 ## Prérequis :
-
-1. Installer Postgreql
-2. Installer Postgis
-3. Créer une base de données appelée tomsa avec extention Postgis et un utilisateur appelé tomsa
-4. Lancer le script db/tomsa.sql
+1. Installer Java
+2. Installer Maven
+3. Installer Postgreql
+4. Installer Postgis
+5. Créer une base de données appelée tomsa avec extention Postgis et un utilisateur appelé tomsa
+6. Lancer le script db/tomsa.sql dans la base de donnée
 
 5. Installer mongoDB
 
 6. Installer la commande curl si nécessaire
 
+7. Mettre à jour le chemin de java jdk :
+Dans simulator\pom.xml et data-extractor\pom.xml :
+```
+ <plugin>
+       <artifactId>maven-compiler-plugin</artifactId>
+       <version>3.1</version>
+          <configuration>
+        <fork>true</fork>
+    <executable>[MY PATH]\Java\jdk1.8.0_231\bin\javac.exe</executable>
+ </plugin>
+```
 ## Execution :
-Dans un terminal :
 1. Lancer le server de la bd exemple :
- - pg_ctl -D "myPath\PostgreSQL\11\data" start
- 
-A la racine de chaque module :
+ - pg_ctl -D "myPath\PostgreSQL\11\data" start (dans un terminal)
+ - OU lancer pgAdmin
+
+Dans un terminal :
+A la racine de chaque modules (simulator, data extractor, interface):
 1. mvn install
 
+Puis :
 Dans les modules simulator et data-extractor :
 2. mvn spring-boot:run
 
-Dans le module interface :
+Pour lancer le module interface (si souhaité):
+Dans un autre terminal :
 2. mvn appengine:devserver
 3. Ouvrir un navigateur et se connecter sur l'url :
  -  "localhost:8080/one" : pour l'interface de lancement d'une seule simulation (Interface pour "localhost:9090/state")
@@ -33,8 +48,9 @@ Dans le module interface :
 
 ## Liste des commandes et leurs arguments :
 
-### Lancer une simulation :
+### Lancer une simulation:
 
+Dans un nouveau terminal :
 Cela se fait par le biais d'une commande curl, en voici un exemple :
 ```
 curl -H "Content-Type: application/json" -X POST localhost:9090/state -d "{\"storageType\": 1, \"nbrHousehold\": 50, \"nbrInvestor\": 50, \"nbrPromoter\": 50, \"num\":10, \"listOfEquipment\":[85,81], \"listOfTransport\":[176,794], \"fileHousehold\" : \"householdAgent.apl\", \"fileInvestor\" : \"investorAgent.apl\", \"filePromoter\" : \"promoterAgent.apl\"}"
